@@ -1,0 +1,44 @@
+{
+    "broker": "212.129.236.95",
+    "port": 1883,
+    "keepalive_interval": 60,
+    "username": "sytest1",
+    "password": "sytest1",
+    "task_set": {
+        "origin_latitude": "31.1546225",
+        "origin_longitude": "120.265441",
+        "offset_latitude": "31.1547225",
+        "offset_longitude": "120.275442",
+        "allowed_car_offset": 3.0,
+        "task_file": "task1.json"
+    },
+    "control": {
+        "cmd": 0,
+        "start_from_id": 0
+    },
+    "arm_set": {
+        "arm_pose": {
+            "x": 1.23,
+            "y": 1.23,
+            "z": 1.23,
+            "roll": 1.23,
+            "pitch": 1.23,
+            "yaw": 1.23
+        }
+    },
+    "setting": {
+        "heatbeat_interval": 1000,
+        "max_vehicle_speed_limit": 3.0,
+        "min_vehicle_speed_limit": 1.0,
+        "robot_arm_speed_rate": 0.25
+    },
+    "send_task_file": {
+        "file_name": "default.json",
+        "override": true,
+        "basecode": ""
+    },
+    "request_task_file": {
+        "request_all": false,
+        "file_name": "xxx.json"
+    }
+}

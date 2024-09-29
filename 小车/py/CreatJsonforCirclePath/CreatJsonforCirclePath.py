@@ -4,6 +4,61 @@ import math
 from datetime import datetime
 
 
+
+def generate_linear_trajectory_json(start_point, end_point, arc_length=0.1):
+    task_name = "LinearPath"
+    nodes = []
+    
+    direction_vector = (end_point[0] - start_point[0], end_point[1] - start_point[1])
+    length = math.sqrt(direction_vector[0]**2 + direction_vector[1]**2)
+    unit_vector = (direction_vector[0] / length, direction_vector[1] / length)
+    num_nodes = int(length / arc_length)
+
+    for i in range(num_nodes + 1):
+        x = round(start_point[0] + i * arc_length * unit_vector[0], 3)
+        y = round(start_point[1] + i * arc_length * unit_vector[1], 3)
+        node = {"id": i + 1, "pos": {"x": x, "y": y}}
+        nodes.append(node)
+
+        # 检查当前位置是否为特殊节点（每隔1米）
+        if i * arc_length % 1 == 0:
+            special_node = {
+                "id": len(nodes) + 1,  # 特殊节点的 id 从普通节点后续开始
+                "pos": {"x": x, "y": y},
+                "task": {
+                    "task_id": len(nodes) + 1,
+                    "is_pre_defined": False,
+                    "defined_id": -1,
+                    "repeat_count": 1,
+                    "task_nodes": [
+                        {
+                            "arm_id": 1,
+                            "stay_time": 3,
+                            "arm_pose": {
+                                "x": 0.04,
+                                "y": 0.03,
+                                "z": 0.49,
+                                "roll": -89.96,
+                                "pitch": -3.56,
+                                "yaw": 88.89,
+                                "joint1": -4.712,
+                                "joint2": -2.870,
+                                "joint3": 2.491,
+                                "joint4": -2.727,
+                                "joint5": 3.122,
+                                "joint6": -0.026,
+                            },
+                        }
+                    ],
+                },
+            }
+            nodes.append(special_node)  # 直接添加到节点列表中
+
+    data = {"task_name": task_name, "nodes": nodes}
+    return json.dumps(data, indent=4, ensure_ascii=False)
+
+
+
 def generate_circular_trajectory_json(radius, arc_length=0.1):
     task_name = (
         "CirclePath_Rad" + str(radius) + "m"
@@ -117,24 +172,38 @@ def list_to_str():
 
 
 if __name__ == "__main__":
-    # 设置参数
-    radius = 3  # 半径为10
-    current_path = os.path.dirname(os.path.realpath(__file__))
-    print(f"current_path:{current_path}")
+    # # 设置参数
+    # radius = 3  # 半径为10
+    # current_path = os.path.dirname(os.path.realpath(__file__))
+    # print(f"current_path:{current_path}")
 
-    arc_length = 0.1  # 两节点之间的弧长约为0.1米
-    task_name = (
-        "CirclePath_Rad" + str(radius) + "m"
-    )  # _'+datetime.now().strftime("%Y-%m-%d-%H%M%S")
-    task_name = os.path.join(current_path, task_name)
-    print(f"task_name:{task_name}")
-    list_to_str()
+    # arc_length = 0.1  # 两节点之间的弧长约为0.1米
+    # task_name = (
+    #     "CirclePath_Rad" + str(radius) + "m"
+    # )  # _'+datetime.now().strftime("%Y-%m-%d-%H%M%S")
+    # task_name = os.path.join(current_path, task_name)
+    # print(f"task_name:{task_name}")
+    # list_to_str()
 
-    # 生成圆形轨迹的JSON
-    json_output, taskId_points = generate_circular_trajectory_json(radius)
+    # # 生成圆形轨迹的JSON
+    # json_output, taskId_points = generate_circular_trajectory_json(radius)
 
-    save_json_to_file(json_output, task_name)
-    print(f"taskId_points:{taskId_points}")
+    # save_json_to_file(json_output, task_name)
+    # print(f"taskId_points:{taskId_points}")
 
-    _, sdd = generate_circular_trajectory_json(3)
-    print(f"taskId_points:{sdd}")
+    # _, sdd = generate_circular_trajectory_json(3)
+    # print(f"taskId_points:{sdd}")
+
+    # 生成直线轨迹的JSON
+    start = (0, 0)  # 起点
+    end = (0, 4)    # 终点
+    linear_json_output = generate_linear_trajectory_json(start, end)
+    linear_task_name = "LinearPath"
+    save_json_to_file(linear_json_output, linear_task_name)
+    print(f"Linear trajectory saved with task name: {linear_task_name}")
+# # 示例用法
+# if __name__ == "__main__":
+#     start = (0, 0)  # 起点
+#     end = (3, 4)    # 终点
+#     linear_json = generate_linear_trajectory_json(start, end)
+#     print(linear_json)

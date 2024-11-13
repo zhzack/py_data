@@ -35,7 +35,7 @@ from PyQt5.QtWidgets import (
     QToolBar,
 )
 from PyQt5.QtCore import QThread, pyqtSignal
-from serial_reader import SerialDataReader
+
 
 from PyQt5.QtCore import QTimer
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -58,6 +58,7 @@ class SerialDataReaderThread(QThread):
             try:
                 data = self.reader.read_serial_data()
                 formatted_data = ", ".join(data)
+                # print(data)
                 self.data_received.emit(formatted_data)  # Emit data to GUI
             except Exception as e:
                 self.data_received.emit(f"Error: {str(e)}")
@@ -191,7 +192,7 @@ class MQTTGui(QMainWindow):
     def update_display(self, data):
         # print("Received data:", data)
         data = self.str_to_obj(data)
-        self.plot_uwb.update_plot(int(data['x']),int(data['y']))
+        # self.plot_uwb.update_plot(int(data['x']),int(data['y']))
         # print("Converted data:", data)
         if self.mqtt_res_obj == {}:
             return
@@ -199,6 +200,8 @@ class MQTTGui(QMainWindow):
         
         # print("Formatted data:", data)
         self.message_display.append(str(data))
+
+        print(data)
         # exit()
         self.message_display.verticalScrollBar().setValue(
             self.message_display.verticalScrollBar().maximum()
@@ -274,9 +277,9 @@ class MQTTGui(QMainWindow):
     def btn_task_set(self):
         config = self.mqtt_client.get_config()
         task_set_msg = config["pub_config"]["task_set"]["task_set"]
-        print(task_set_msg)
+        # print(task_set_msg)
         task_set_msg_temp = self.edit_task_set(task_set_msg)
-        print(task_set_msg_temp)
+        # print(task_set_msg_temp)
         # if task_set_msg !=task_set_msg_temp:
         self.mqtt_client.config["pub_config"]["task_set"][
             "task_set"

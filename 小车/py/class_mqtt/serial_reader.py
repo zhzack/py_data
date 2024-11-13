@@ -1,6 +1,6 @@
 import serial
 from serial.tools import list_ports
-import time
+
 
 class SerialDataReader:
     def __init__(self, target_description="USB to UART", baudrate=460800, timeout=1):
@@ -20,7 +20,8 @@ class SerialDataReader:
     def open_serial_port(self):
         port_name = SerialDataReader.find_serial_port(self.target_description)
         if port_name:
-            self.serial_port = serial.Serial(port_name, self.baudrate, timeout=self.timeout)
+            self.serial_port = serial.Serial(
+                port_name, self.baudrate, timeout=self.timeout)
             return True
         else:
             return False
@@ -35,6 +36,7 @@ class SerialDataReader:
             if ":" in data[i]:
                 data[i] = data[i].strip()
                 _, data[i] = data[i].split(":", 1)
+        data = line
         return data
 
     def close(self):

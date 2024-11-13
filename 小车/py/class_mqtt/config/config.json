@@ -123,9 +123,6 @@
         "x",
         "y",
         "z",
-        "DstPdoaFirst",
-        "DstPdoaSecond",
-        "DstPdoaThird",
         "RSSI",
         "timestamp"
     ]

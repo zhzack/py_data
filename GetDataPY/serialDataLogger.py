@@ -267,7 +267,6 @@ if __name__ == "__main__":
     # app = MainApp()
     # app.run()
     
-    target_description = "USB to UART"
     headers = [
         "sessionNumber",
         "sessionID",
@@ -321,6 +320,8 @@ if __name__ == "__main__":
         "RSSI",
         "timestamp"
     ]
+    target_description = "USB to UART"
+    target_description = "WCH USB-SERIAL Ch D"
 
     baudrate = 460800
     print_serial_data = 1

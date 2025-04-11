@@ -6,7 +6,7 @@ from realtime_display import RealTimeDisplayApp
 import tkinter as tk
 
 def main(enable_gui=False, print_serial_data=1,description=""):
-    target_description = "29"
+    target_description = "16"
     headers = [
         "sessionNumber",
         "PdoaFirst",
